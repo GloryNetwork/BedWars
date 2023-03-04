@@ -121,7 +121,7 @@ public class ShopCache {
             if (cc.isDowngradable() && tier > 1) tier--;
             BedWars.debug("ShopCache Item Restore: " + cc.getIdentifier() + " for " + player);
             //noinspection ConstantConditions
-            cc.giveItems(Bukkit.getPlayer(player), getShopCache(player), arena);
+            cc.giveItems(Bukkit.getPlayer(player), getShopCache(player), arena, -1);
         }
 
         public void upgrade(int slot) {

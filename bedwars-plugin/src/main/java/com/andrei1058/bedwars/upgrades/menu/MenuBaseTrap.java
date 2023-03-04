@@ -286,6 +286,16 @@ public class MenuBaseTrap implements MenuContent, EnemyBaseEnterTrap, TeamUpgrad
             p1.sendMessage(Language.getMsg(p1, Messages.UPGRADES_UPGRADE_BOUGHT_CHAT).replace("{playername}", player.getName()).replace("{player}", player.getDisplayName()).replace("{upgradeName}",
                     ChatColor.stripColor(Language.getMsg(p1, Messages.UPGRADES_BASE_TRAP_ITEM_NAME_PATH + getName().replace("base-trap-", "")).replace("{color}", ""))));
         }
+
+        for(Player enemy : team.getArena().getPlayers()) {
+            if(team.isMember(enemy)) continue;
+            if(team.getArena().isReSpawning(enemy)) continue;
+            if(enemy.getLocation().distance(team.getBed()) <= team.getArena().getIslandRadius()) {
+                team.getActiveTraps().get(0).trigger(team, enemy);
+                team.getActiveTraps().remove(0);
+            }
+        }
+
         UpgradesManager.getMenuForArena(team.getArena()).open(player);
     }
 

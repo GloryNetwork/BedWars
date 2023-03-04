@@ -719,4 +719,14 @@ public class v1_8_R3 extends VersionSupport {
     public void clearArrowsFromPlayerBody(Player player) {
         ((CraftLivingEntity)player).getHandle().getDataWatcher().watch(9, (byte)-1);
     }
+
+    @Override
+    public void playFootprint(Player player, Location location) {
+        PacketPlayOutWorldParticles particlePacket = new PacketPlayOutWorldParticles(EnumParticle.FOOTSTEP, true, (float) location.getX(),
+                (float) location.getY(), (float) location.getZ(), 0, 0, 0, 0, 2);
+        for (Player inWorld : player.getWorld().getPlayers()) {
+            if (inWorld.equals(player)) continue;
+            ((CraftPlayer) inWorld).getHandle().playerConnection.sendPacket(particlePacket);
+        }
+    }
 }

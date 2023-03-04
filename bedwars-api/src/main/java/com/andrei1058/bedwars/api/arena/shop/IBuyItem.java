@@ -34,7 +34,7 @@ public interface IBuyItem {
     /**
      * Give content to a player
      */
-    void give(Player player, IArena arena);
+    void give(Player player, IArena arena, int slot);
 
     /**
      * Get upgrade identifier.

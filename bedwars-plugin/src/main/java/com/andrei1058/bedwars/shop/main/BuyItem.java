@@ -171,7 +171,7 @@ public class BuyItem implements IBuyItem {
     /**
      * Give to a player
      */
-    public void give(Player player, IArena arena) {
+    public void give(Player player, IArena arena, int slot) {
 
         ItemStack i = itemStack.clone();
         BedWars.debug("Giving BuyItem: " + getUpgradeIdentifier() + " to: " + player.getName());
@@ -259,8 +259,34 @@ public class BuyItem implements IBuyItem {
             }
         }
         //
-        player.getInventory().addItem(i);
+        addToInventory(player, i, slot);
         player.updateInventory();
+    }
+
+    private void addToInventory(Player player, ItemStack item, int slot) {
+        if (slot == -1) {
+            player.getInventory().addItem(item);
+            return;
+        }
+        if(player.getInventory().getItem(slot) == null || player.getInventory().getItem(slot).getType() == Material.AIR) {
+            player.getInventory().setItem(slot, item);
+            return;
+        }
+        final ItemStack replace = player.getInventory().getItem(slot);
+        if (!replace.isSimilar(item)) {
+            player.getInventory().setItem(slot, item);
+            player.getInventory().setItem(player.getInventory().firstEmpty(), replace);
+            return;
+        }
+        ItemStack stack = player.getInventory().getItem(slot);
+        int stackAmount = stack.getAmount();
+        int maxStackSize = stack.getMaxStackSize();
+        if ((maxStackSize != -1) && ((stackAmount + item.getAmount()) <= maxStackSize)) {
+            stack.setAmount(stackAmount + item.getAmount());
+        } else {
+            player.getInventory().addItem(item);
+        }
+
     }
 
 

@@ -39,6 +39,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import static com.andrei1058.bedwars.BedWars.nms;
 import static org.bukkit.event.inventory.InventoryAction.HOTBAR_SWAP;
@@ -62,6 +63,7 @@ public class InventoryListener implements Listener {
 
         if (ShopIndex.getIndexViewers().contains(e.getWhoClicked().getUniqueId())) {
             e.setCancelled(true);
+            if(e.getClickedInventory() instanceof PlayerInventory) return;
             for (ShopCategory sc : ShopManager.getShop().getCategoryList()) {
                 if (e.getSlot() == sc.getSlot()) {
                     sc.open((Player) e.getWhoClicked(), ShopManager.getShop(), shopCache);
@@ -72,15 +74,16 @@ public class InventoryListener implements Listener {
                 if (element.getSlot() == e.getSlot()) {
                     if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
                         cache.setElement(element.getSlot(), null);
-                        e.getWhoClicked().closeInventory();
+                        ShopManager.getShop().open((Player) e.getWhoClicked(), cache, true);
                         return;
                     }
-                    element.getCategoryContent().execute((Player) e.getWhoClicked(), shopCache, element.getSlot());
+                    element.getCategoryContent().execute((Player) e.getWhoClicked(), shopCache, element.getSlot(), e.getHotbarButton());
                     return;
                 }
             }
         } else if (ShopCategory.getCategoryViewers().contains(e.getWhoClicked().getUniqueId())) {
             e.setCancelled(true);
+            if(e.getClickedInventory() instanceof PlayerInventory) return;
             for (ShopCategory sc : ShopManager.getShop().getCategoryList()) {
                 if (ShopManager.getShop().getQuickBuyButton().getSlot() == e.getSlot()) {
                     ShopManager.getShop().open((Player) e.getWhoClicked(), cache, false);
@@ -98,13 +101,14 @@ public class InventoryListener implements Listener {
                             new QuickBuyAdd((Player) e.getWhoClicked(), cc);
                             return;
                         }
-                        cc.execute((Player) e.getWhoClicked(), shopCache, cc.getSlot());
+                        cc.execute((Player) e.getWhoClicked(), shopCache, cc.getSlot(), e.getHotbarButton());
                         return;
                     }
                 }
             }
         } else if (QuickBuyAdd.getQuickBuyAdds().containsKey(e.getWhoClicked().getUniqueId())) {
             e.setCancelled(true);
+            if(e.getClickedInventory() instanceof PlayerInventory) return;
             boolean add = false;
             for (int i : PlayerQuickBuyCache.quickSlots) {
                 if (i == e.getSlot()) {
@@ -116,7 +120,7 @@ public class InventoryListener implements Listener {
             if (cc != null) {
                 cache.setElement(e.getSlot(), cc);
             }
-            e.getWhoClicked().closeInventory();
+            ShopManager.getShop().open((Player) e.getWhoClicked(), cache, true);
         }
     }
 

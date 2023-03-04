@@ -64,7 +64,7 @@ public class BuyCommand implements IBuyItem {
     }
 
     @Override
-    public void give(Player player, IArena arena) {
+    public void give(Player player, IArena arena, int slot) {
         BedWars.debug("Giving BuyCMD: " + getUpgradeIdentifier() + " to: " + player.getName());
         String playerName = player.getName();
         String playerUUID = player.getUniqueId().toString();

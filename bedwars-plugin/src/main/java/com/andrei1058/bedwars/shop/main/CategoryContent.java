@@ -131,7 +131,7 @@ public class CategoryContent implements ICategoryContent {
 
     }
 
-    public void execute(Player player, ShopCache shopCache, int slot) {
+    public void execute(Player player, ShopCache shopCache, int element, int slot) {
 
         IContentTier ct;
 
@@ -181,11 +181,11 @@ public class CategoryContent implements ICategoryContent {
         takeMoney(player, ct.getCurrency(), ct.getPrice());
 
         //upgrade if possible
-        shopCache.upgradeCachedItem(this, slot);
+        shopCache.upgradeCachedItem(this, element);
 
 
         //give items
-        giveItems(player, shopCache, Arena.getArenaByPlayer(player));
+        giveItems(player, shopCache, Arena.getArenaByPlayer(player), slot);
 
         //play sound
         Sounds.playSound(ConfigPath.SOUNDS_BOUGHT, player);
@@ -207,9 +207,9 @@ public class CategoryContent implements ICategoryContent {
     /**
      * Add tier items to player inventory
      */
-    public void giveItems(Player player, ShopCache shopCache, IArena arena) {
+    public void giveItems(Player player, ShopCache shopCache, IArena arena, int slot) {
         for (IBuyItem bi : contentTiers.get(shopCache.getContentTier(getIdentifier()) - 1).getBuyItemsList()) {
-            bi.give(player, arena);
+            bi.give(player, arena, slot);
         }
     }
 

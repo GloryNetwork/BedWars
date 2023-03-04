@@ -699,4 +699,7 @@ public class v1_18_R1 extends VersionSupport {
     public void clearArrowsFromPlayerBody(Player player) {
         ((CraftLivingEntity)player).getHandle().ai().b(new DataWatcherObject<>(12, DataWatcherRegistry.b),-1);
     }
+
+    @Override
+    public void playFootprint(Player player, Location location) {}
 }

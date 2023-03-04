@@ -182,7 +182,7 @@ public class PumpkinContent extends CategoryContent {
         }
 
         @Override
-        public void give(Player player, IArena arena) {
+        public void give(Player player, IArena arena, int slot) {
             player.getInventory().addItem(new ItemStack(Material.PUMPKIN, 12));
         }
 
