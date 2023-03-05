@@ -31,6 +31,7 @@ import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.tasks.PlayingTask;
 import com.andrei1058.bedwars.arena.Arena;
+import com.andrei1058.bedwars.arena.OreGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +39,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static com.andrei1058.bedwars.BedWars.nms;
 import static com.andrei1058.bedwars.api.language.Language.getMsg;
@@ -46,7 +46,7 @@ import static com.andrei1058.bedwars.api.language.Language.getMsg;
 public class GamePlayingTask implements Runnable, PlayingTask {
 
     private Arena arena;
-    private BukkitTask task;
+    private BukkitTask task, generators;
     private int beds_destroy_countdown, dragon_spawn_countdown, game_end_countdown;
 
     public GamePlayingTask(Arena arena) {
@@ -55,6 +55,7 @@ public class GamePlayingTask implements Runnable, PlayingTask {
         this.dragon_spawn_countdown = BedWars.config.getInt(ConfigPath.GENERAL_CONFIGURATION_DRAGON_SPAWN_COUNTDOWN);
         this.game_end_countdown = BedWars.config.getInt(ConfigPath.GENERAL_CONFIGURATION_GAME_END_COUNTDOWN);
         this.task = Bukkit.getScheduler().runTaskTimer(BedWars.plugin, this, 0, 20L);
+        this.generators = Bukkit.getScheduler().runTaskTimer(BedWars.plugin, new ForgeTask(arena), 0, 5L);
     }
 
     public Arena getArena() {
@@ -65,13 +66,13 @@ public class GamePlayingTask implements Runnable, PlayingTask {
     public BukkitTask getBukkitTask() {
         return task;
     }
-
     /**
      * Get task ID
      */
     public int getTask() {
         return task.getTaskId();
     }
+    public int getForgeTask() { return generators.getTaskId(); }
 
     public int getBedsDestroyCountdown() {
         return beds_destroy_countdown;
@@ -188,10 +189,9 @@ public class GamePlayingTask implements Runnable, PlayingTask {
                             .replace("{distance}", t.getColor().chat().toString() + distance).replace("&", "§"));
                 }
             }
-
-            // spawn items
-            for (IGenerator o : t.getGenerators()) {
-                o.spawn();
+            for (IGenerator generator : t.getGenerators()) {
+                OreGenerator o = (OreGenerator) generator;
+                o.updateHologram(true);
             }
         }
 
@@ -252,11 +252,15 @@ public class GamePlayingTask implements Runnable, PlayingTask {
                 }
             }
         }
-
-        /* SPAWN ITEMS */
-        for (IGenerator o : getArena().getOreGenerators()) {
-            o.spawn();
+        for (IGenerator generator : arena.getOreGenerators()) {
+            generator.spawn();
+            OreGenerator o = (OreGenerator) generator;
+            o.updateHologram(false);
         }
+    }
+
+    public void cancelGenerators() {
+        generators.cancel();
     }
 
     public void cancel() {

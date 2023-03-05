@@ -79,6 +79,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -168,7 +169,7 @@ public class Arena implements IArena {
     private PerMinuteTask perMinuteTask;
 
     private MoneyPerMinuteTask moneyperMinuteTask;
-    private HeightLimitTask heightLimitTask;
+    private BukkitTask heightLimitTask;
 
 
     private static final LinkedList<IArena> enableQueue = new LinkedList<>();
@@ -1499,7 +1500,7 @@ public class Arena implements IArena {
             if (BedWars.getEconomy() instanceof WithEconomy) {
                 moneyperMinuteTask = new MoneyPerMinuteTask(this);
             }
-            heightLimitTask = new HeightLimitTask(this);
+            heightLimitTask = new HeightLimitTask(this).runTaskTimer(plugin, 0L, 5L);
             playingTask = new GamePlayingTask(this);
         } else if (status == GameState.restarting) {
             restartingTask = new GameRestartingTask(this);

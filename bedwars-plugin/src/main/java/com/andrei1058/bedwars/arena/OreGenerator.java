@@ -191,8 +191,11 @@ public class OreGenerator implements IGenerator {
             }
         }
         lastSpawn--;
+    }
+
+    public void updateHologram(boolean forge) {
         for (IGenHolo e : armorStands.values()) {
-            e.setTimerName(Language.getLang(e.getIso()).m(Messages.GENERATOR_HOLOGRAM_TIMER).replace("{seconds}", String.valueOf(lastSpawn)));
+            e.setTimerName(Language.getLang(e.getIso()).m(Messages.GENERATOR_HOLOGRAM_TIMER).replace("{seconds}", String.valueOf(forge ? lastSpawn/4 : lastSpawn)));
         }
     }
 
@@ -249,7 +252,7 @@ public class OreGenerator implements IGenerator {
             this.tier = createArmorStand(Language.getLang(iso).m(Messages.GENERATOR_HOLOGRAM_TIER)
                     .replace("{tier}", Language.getLang(iso).m(Messages.FORMATTING_GENERATOR_TIER1)), location.clone().add(0, 3, 0));
             this.timer = createArmorStand(Language.getLang(iso).m(Messages.GENERATOR_HOLOGRAM_TIMER)
-                    .replace("{seconds}", String.valueOf(lastSpawn)), location.clone().add(0, 2.4, 0));
+                    .replace("{seconds}", String.valueOf(lastSpawn/4)), location.clone().add(0, 2.4, 0));
             this.name = createArmorStand(Language.getLang(iso).m(getOre().getType() == Material.DIAMOND ? Messages.GENERATOR_HOLOGRAM_TYPE_DIAMOND
                     : Messages.GENERATOR_HOLOGRAM_TYPE_EMERALD), location.clone().add(0, 2.7, 0));
 

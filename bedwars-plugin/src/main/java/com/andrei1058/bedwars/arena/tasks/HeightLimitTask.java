@@ -4,6 +4,7 @@ import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.arena.GameState;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.configuration.ConfigPath;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -33,7 +34,11 @@ public class HeightLimitTask extends BukkitRunnable {
                 return;
             }
             int distance = (int) (maxHeight - player.getLocation().getY());
-            BedWars.nms.playAction(player, getMsg(player, ConfigPath.HEIGHT_LIMIT_INDICATOR.replaceAll("%distance%", String.valueOf(distance))));
+            
+            String message = BedWars.config.getString(ConfigPath.HEIGHT_LIMIT_INDICATOR)
+                    .replaceAll("%distance%", String.valueOf(distance));
+
+            BedWars.nms.playAction(player, ChatColor.translateAlternateColorCodes('&', message));
         }
     }
 }
