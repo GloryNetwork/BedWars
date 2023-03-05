@@ -363,4 +363,7 @@ public class Messages {
     /* Arena waiting Items Messages */
     public static final String GENERAL_CONFIGURATION_WAITING_ITEMS_NAME = ConfigPath.GENERAL_CONFIGURATION_PRE_GAME_ITEMS_PATH+"-%path%-name";
     public static final String GENERAL_CONFIGURATION_WAITING_ITEMS_LORE = ConfigPath.GENERAL_CONFIGURATION_PRE_GAME_ITEMS_PATH+"-%path%-lore";
+
+    /* Height Indicator */
+    public static final String HEIGHT_LIMIT_INDICATOR = ConfigPath.HEIGHT_LIMIT_INDICATOR;
 }

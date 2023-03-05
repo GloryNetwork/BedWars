@@ -300,4 +300,6 @@ public class ConfigPath {
     public static final String SHOP_PATH_CATEGORY_UTILITY = "utility-category";
 
     public static final String TEAM_NAME_PATH = "team-name-{arena}-{team}";
+
+    public static final String HEIGHT_LIMIT_INDICATOR = "height-limit-indicator";
 }

@@ -40,6 +40,7 @@ import com.andrei1058.bedwars.arena.spectator.SpectatorListeners;
 import com.andrei1058.bedwars.arena.tasks.OneTick;
 import com.andrei1058.bedwars.arena.tasks.Refresh;
 import com.andrei1058.bedwars.arena.upgrades.BaseListener;
+import com.andrei1058.bedwars.commands.bedwars.CmdSpectate;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
 import com.andrei1058.bedwars.commands.leave.LeaveCommand;
 import com.andrei1058.bedwars.commands.party.PartyCommand;
@@ -247,6 +248,7 @@ public class BedWars extends JavaPlugin {
 
         /* Register commands */
         nms.registerCommand(mainCmd, new MainCommand(mainCmd));
+        nms.registerCommand("spectate", new CmdSpectate("spectate"));
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             if (!nms.isBukkitCommandRegistered("shout")) {

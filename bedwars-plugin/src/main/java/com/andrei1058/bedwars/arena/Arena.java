@@ -49,10 +49,7 @@ import com.andrei1058.bedwars.api.server.ServerType;
 import com.andrei1058.bedwars.api.tasks.PlayingTask;
 import com.andrei1058.bedwars.api.tasks.RestartingTask;
 import com.andrei1058.bedwars.api.tasks.StartingTask;
-import com.andrei1058.bedwars.arena.tasks.GamePlayingTask;
-import com.andrei1058.bedwars.arena.tasks.GameRestartingTask;
-import com.andrei1058.bedwars.arena.tasks.GameStartingTask;
-import com.andrei1058.bedwars.arena.tasks.ReJoinTask;
+import com.andrei1058.bedwars.arena.tasks.*;
 import com.andrei1058.bedwars.arena.team.BedWarsTeam;
 import com.andrei1058.bedwars.arena.team.TeamAssigner;
 import com.andrei1058.bedwars.configuration.ArenaConfig;
@@ -164,12 +161,15 @@ public class Arena implements IArena {
     private PlayingTask playingTask = null;
     private RestartingTask restartingTask = null;
 
+
     /* ARENA GENERATORS */
     private List<IGenerator> oreGenerators = new ArrayList<>();
 
     private PerMinuteTask perMinuteTask;
 
     private MoneyPerMinuteTask moneyperMinuteTask;
+    private HeightLimitTask heightLimitTask;
+
 
     private static final LinkedList<IArena> enableQueue = new LinkedList<>();
 
@@ -1499,14 +1499,18 @@ public class Arena implements IArena {
             if (BedWars.getEconomy() instanceof WithEconomy) {
                 moneyperMinuteTask = new MoneyPerMinuteTask(this);
             }
+            heightLimitTask = new HeightLimitTask(this);
             playingTask = new GamePlayingTask(this);
         } else if (status == GameState.restarting) {
             restartingTask = new GameRestartingTask(this);
             if (perMinuteTask != null) {
-                perMinuteTask.cancel ();
+                perMinuteTask.cancel();
             }
             if (moneyperMinuteTask != null) {
-                moneyperMinuteTask.cancel ();
+                moneyperMinuteTask.cancel();
+            }
+            if(heightLimitTask != null) {
+                heightLimitTask.cancel();
             }
         }
     }
