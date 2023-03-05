@@ -34,7 +34,7 @@ public class HeightLimitTask extends BukkitRunnable {
                 return;
             }
             int distance = (int) (maxHeight - player.getLocation().getY());
-            
+
             String message = BedWars.config.getString(ConfigPath.HEIGHT_LIMIT_INDICATOR)
                     .replaceAll("%distance%", String.valueOf(distance));
 

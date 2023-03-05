@@ -1500,7 +1500,7 @@ public class Arena implements IArena {
             if (BedWars.getEconomy() instanceof WithEconomy) {
                 moneyperMinuteTask = new MoneyPerMinuteTask(this);
             }
-            heightLimitTask = new HeightLimitTask(this).runTaskTimer(plugin, 0L, 5L);
+            heightLimitTask = new HeightLimitTask(this).runTaskTimer(plugin, 0L, 1L);
             playingTask = new GamePlayingTask(this);
         } else if (status == GameState.restarting) {
             restartingTask = new GameRestartingTask(this);
