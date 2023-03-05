@@ -391,6 +391,9 @@ public class Misc {
                 return true;
             }
         }
+        if(l.getY() >= a.getConfig().getInt(ConfigPath.ARENA_CONFIGURATION_MAX_BUILD_Y)) {
+            return true;
+        }
         return isOutsideOfBorder(l);
     }
 

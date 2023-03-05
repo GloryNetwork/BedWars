@@ -40,8 +40,7 @@ public class PlayerDropListener implements Listener {
         if (a == null) return;
         String identifier = BedWars.nms.getShopUpgradeIdentifier(e.getItemDrop().getItemStack());
         if (identifier == null) return;
-        if (identifier.isEmpty() || identifier.equals(" ")) return;
-        if (identifier.equals("null")) return;
+        if (identifier.isEmpty() || identifier.equals(" ") || identifier.equals("null")) return;
         e.setCancelled(true);
     }
 

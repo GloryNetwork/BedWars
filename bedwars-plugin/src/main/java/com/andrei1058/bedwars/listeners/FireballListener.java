@@ -72,6 +72,9 @@ public class FireballListener implements Listener {
             Player player = (Player) entity;
             if(!getAPI().getArenaUtil().isPlaying(player)) continue;
 
+            if(player != source && arena.getTeam(player).equals(arena.getTeam(source))) {
+                return;
+            }
 
             Vector playerVector = player.getLocation().toVector();
             Vector normalizedVector = vector.subtract(playerVector).normalize();
@@ -109,12 +112,10 @@ public class FireballListener implements Listener {
         }
     }
 
-
     @EventHandler
     public void fireballDirectHit(EntityDamageByEntityEvent e) {
         if(!(e.getDamager() instanceof Fireball)) return;
         if(!(e.getEntity() instanceof Player)) return;
-
         if(Arena.getArenaByPlayer((Player) e.getEntity()) == null) return;
 
         e.setCancelled(true);
