@@ -71,6 +71,7 @@ public class FireballListener implements Listener {
             if(!(entity instanceof Player)) continue;
             Player player = (Player) entity;
             if(!getAPI().getArenaUtil().isPlaying(player)) continue;
+            if(!player.equals(source) && arena.getTeam(player).equals(arena.getTeam(source))) continue;
 
             Vector playerVector = player.getLocation().toVector();
             Vector normalizedVector = vector.subtract(playerVector).normalize();
@@ -83,16 +84,14 @@ public class FireballListener implements Listener {
                 y = y*fireballVertical*1.5; // kb for jumping
             }
 
-            if(player.equals(source) || !arena.getTeam(player).equals(arena.getTeam(source))) {
-                player.setVelocity(horizontalVector.setY(y));
+            player.setVelocity(horizontalVector.setY(y));
 
-                LastHit lh = LastHit.getLastHit(player);
-                if (lh != null) {
-                    lh.setDamager(source);
-                    lh.setTime(System.currentTimeMillis());
-                } else {
-                    new LastHit(player, source, System.currentTimeMillis());
-                }
+            LastHit lh = LastHit.getLastHit(player);
+            if (lh != null) {
+                lh.setDamager(source);
+                lh.setTime(System.currentTimeMillis());
+            } else {
+                new LastHit(player, source, System.currentTimeMillis());
             }
 
             if(player.equals(source)) {

@@ -8,8 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static com.andrei1058.bedwars.api.language.Language.getMsg;
-
 public class HeightLimitTask extends BukkitRunnable {
 
     private IArena arena;
@@ -30,15 +28,17 @@ public class HeightLimitTask extends BukkitRunnable {
             return;
         }
         for(Player player : arena.getPlayers()) {
-            if(player.getLocation().getY() > maxHeight) {
+            if(player.getLocation().getY() >= maxHeight) {
                 return;
             }
             int distance = (int) (maxHeight - player.getLocation().getY());
 
-            String message = BedWars.config.getString(ConfigPath.HEIGHT_LIMIT_INDICATOR)
-                    .replaceAll("%distance%", String.valueOf(distance));
+            if(distance <= 7) {
+                String message = BedWars.config.getString(ConfigPath.HEIGHT_LIMIT_INDICATOR)
+                        .replaceAll("%distance%", String.valueOf(distance));
 
-            BedWars.nms.playAction(player, ChatColor.translateAlternateColorCodes('&', message));
+                BedWars.nms.playAction(player, ChatColor.translateAlternateColorCodes('&', message));
+            }
         }
     }
 }

@@ -82,7 +82,7 @@ public class ChatFormatting implements Listener {
             }
 
             // arena lobby chat
-            if (a.getStatus() == GameState.waiting || a.getStatus() == GameState.starting) {
+            if (a.getStatus() == GameState.waiting || a.getStatus() == GameState.starting || a.getStatus() == GameState.restarting) {
                 setRecipients(e, a.getPlayers());
                 e.setFormat(parsePHolders(language.m(Messages.FORMATTING_CHAT_WAITING), p, null));
                 return;
